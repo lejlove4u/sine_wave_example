@@ -34,6 +34,7 @@ use ieee.numeric_std.all;
 entity sine_lut is
 generic
 (
+idx_offset              : integer := 0;
 sample_rate             : integer := 1024;
 data_bit_width          : integer := 16
 );
@@ -41,7 +42,7 @@ port
 (
 rst_n                   : in    std_logic;
 clk                     : in    std_logic;
-wave_out                : out   std_logic_Vector(data_bit_width-1 downto 0)
+wave_out                : out   std_logic_vector(data_bit_width-1 downto 0)
 );
 end sine_lut;
 
@@ -138,7 +139,7 @@ begin
     begin
     if (rising_edge(clk)) then
         if (rst_n = '0') then
-            sine_table_idx <= 0;
+            sine_table_idx <= idx_offset;
             wave_polarity <= wave_pol_rising;
         else
             if (sine_table_idx >= sine_table_max-1) then
